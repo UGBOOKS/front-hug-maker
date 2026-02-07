@@ -22,7 +22,8 @@ import {
   X,
   Tag,
   LayoutDashboard,
-  Heart
+  Heart,
+  GraduationCap
 } from 'lucide-react';
 import { mockUser, mockConversations } from '@/data/mockBooks';
 
@@ -37,6 +38,7 @@ const Header = () => {
 
   const navLinks = [
     { path: '/', label: 'Browse', icon: BookOpen },
+    { path: '/tutors', label: 'Tutors', icon: GraduationCap },
     { path: '/create-listing', label: 'Sell', icon: PlusCircle },
     { path: '/messages', label: 'Messages', icon: MessageCircle, badge: unreadMessages },
     { path: '/offers', label: 'Offers', icon: Tag },
