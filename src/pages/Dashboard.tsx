@@ -62,12 +62,12 @@ const Dashboard = () => {
     {
       icon: DollarSign,
       label: 'Total Earnings',
-      value: `GHS ${totalEarnings.toFixed(2)}`,
+      value: `R ${totalEarnings.toFixed(2)}`,
     },
     {
       icon: TrendingUp,
       label: 'This Month',
-      value: 'GHS 85.00',
+      value: 'R 85.00',
     },
   ];
 
@@ -199,7 +199,7 @@ const Dashboard = () => {
                     <p className="text-sm text-muted-foreground">{book.author}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-primary">GHS {book.price.toFixed(2)}</p>
+                    <p className="font-bold text-primary">R {book.price.toFixed(2)}</p>
                     <p className="text-xs text-muted-foreground">
                       {book.createdAt.toLocaleDateString()}
                     </p>

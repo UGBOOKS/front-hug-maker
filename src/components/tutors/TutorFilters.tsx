@@ -102,7 +102,7 @@ const TutorFilters = ({ filters, onFilterChange, onClearFilters, isMobile = fals
 
         {/* Price Range Filter */}
         <AccordionItem value="price">
-          <AccordionTrigger className="text-sm font-medium">Price Range (GHS/hr)</AccordionTrigger>
+          <AccordionTrigger className="text-sm font-medium">Price Range (R/hr)</AccordionTrigger>
           <AccordionContent>
             <div className="flex items-center gap-2">
               <Input

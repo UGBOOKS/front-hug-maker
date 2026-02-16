@@ -275,7 +275,7 @@ const TutorDetail = () => {
               <CardContent className="p-6 space-y-4">
                 <div className="text-center">
                   <p className="text-3xl font-serif font-bold text-primary">
-                    GHS {tutor.pricePerHour}
+                    R {tutor.pricePerHour}
                   </p>
                   <p className="text-sm text-muted-foreground">per hour</p>
                 </div>
@@ -338,7 +338,7 @@ const TutorDetail = () => {
                       <div className="bg-secondary/50 rounded-lg p-3">
                         <p className="text-sm font-medium">Session Fee</p>
                         <p className="text-2xl font-serif font-bold text-primary">
-                          GHS {tutor.pricePerHour}
+                          R {tutor.pricePerHour}
                         </p>
                         <p className="text-xs text-muted-foreground">Payment after session confirmation</p>
                       </div>

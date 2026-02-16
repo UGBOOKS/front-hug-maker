@@ -85,7 +85,7 @@ const BookDetail = () => {
   const handleMakeOffer = () => {
     toast({
       title: 'Offer Sent!',
-      description: `Your offer of GHS ${offerAmount} has been sent to ${book.sellerName}.`,
+      description: `Your offer of R ${offerAmount} has been sent to ${book.sellerName}.`,
     });
     setIsOfferDialogOpen(false);
     setOfferAmount('');
@@ -160,12 +160,12 @@ const BookDetail = () => {
             {/* Price */}
             <div className="flex items-baseline gap-3">
               <span className="text-4xl font-bold text-primary">
-                GHS {book.price.toFixed(2)}
+                R {book.price.toFixed(2)}
               </span>
               {book.originalPrice && (
                 <>
                   <span className="text-xl text-muted-foreground line-through">
-                    GHS {book.originalPrice.toFixed(2)}
+                    R {book.originalPrice.toFixed(2)}
                   </span>
                   <Badge variant="secondary" className="text-success">
                     {Math.round(
@@ -279,11 +279,11 @@ const BookDetail = () => {
                       <div className="flex items-center justify-between text-sm">
                         <span>Listed Price:</span>
                         <span className="font-semibold">
-                          GHS {book.price.toFixed(2)}
+                          R {book.price.toFixed(2)}
                         </span>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium">Your Offer (GHS)</label>
+                        <label className="text-sm font-medium">Your Offer (R)</label>
                         <Input
                           type="number"
                           placeholder="Enter amount"

@@ -68,7 +68,7 @@ const Offers = () => {
     ));
     toast({
       title: 'Offer Accepted',
-      description: `You've accepted the offer of GHS ${offer.amount.toFixed(2)}. The buyer will be notified.`,
+      description: `You've accepted the offer of R ${offer.amount.toFixed(2)}. The buyer will be notified.`,
     });
   };
 
@@ -143,10 +143,10 @@ const Offers = () => {
             <div className="flex items-center gap-4 mb-2">
               <div>
                 <span className="text-lg font-bold text-primary">
-                  GHS {offer.amount.toFixed(2)}
+                  R {offer.amount.toFixed(2)}
                 </span>
                 <span className="text-sm text-muted-foreground ml-2 line-through">
-                  GHS {offer.originalPrice.toFixed(2)}
+                  R {offer.originalPrice.toFixed(2)}
                 </span>
               </div>
               <Badge variant="outline" className="text-xs">
@@ -289,7 +289,7 @@ const Offers = () => {
                     <h4 className="font-serif font-semibold">{selectedOffer.bookTitle}</h4>
                     <p className="text-sm text-muted-foreground">Sold by {selectedOffer.sellerName}</p>
                     <p className="font-bold text-primary mt-2">
-                      GHS {selectedOffer.amount.toFixed(2)}
+                      R {selectedOffer.amount.toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -297,15 +297,15 @@ const Offers = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>GHS {selectedOffer.amount.toFixed(2)}</span>
+                    <span>R {selectedOffer.amount.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Service Fee</span>
-                    <span>GHS {(selectedOffer.amount * 0.05).toFixed(2)}</span>
+                    <span>R {(selectedOffer.amount * 0.05).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t">
                     <span>Total</span>
-                    <span>GHS {(selectedOffer.amount * 1.05).toFixed(2)}</span>
+                    <span>R {(selectedOffer.amount * 1.05).toFixed(2)}</span>
                   </div>
                 </div>
               </div>

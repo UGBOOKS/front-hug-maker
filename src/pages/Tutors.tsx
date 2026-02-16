@@ -103,7 +103,7 @@ const Tutors = () => {
               Find Expert Tutors at UG
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Connect with top tutors from the University of Ghana for your coursework, projects, and exam preparation.
+              Connect with top tutors from universities across South Africa for your coursework, projects, and exam preparation.
             </p>
 
             {/* Department Quick Links */}

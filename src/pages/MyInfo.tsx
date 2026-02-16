@@ -183,7 +183,7 @@ const MyInfo = () => {
                       <FormControl>
                         <div className="relative">
                           <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                          <Input {...field} disabled={!isEditing} className="pl-10" placeholder="+233 ..." />
+                          <Input {...field} disabled={!isEditing} className="pl-10" placeholder="+27 ..." />
                         </div>
                       </FormControl>
                       <FormMessage />
