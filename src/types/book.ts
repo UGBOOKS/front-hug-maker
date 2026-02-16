@@ -82,8 +82,11 @@ export interface User {
 }
 
 export const BOOK_CATEGORIES = [
-  'Fiction',
-  'Non-Fiction',
+  'Applied Science',
+  'Commerce',
+  'Law',
+  'Humanities',
+  'Information Technology',
   'Textbooks',
   'Science & Technology',
   'Business & Economics',
@@ -96,7 +99,6 @@ export const BOOK_CATEGORIES = [
   'History',
   'Travel',
   'Cookbooks',
-  'Other',
 ] as const;
 
 export const BOOK_CONDITIONS = [

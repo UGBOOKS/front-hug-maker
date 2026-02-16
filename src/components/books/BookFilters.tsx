@@ -110,7 +110,7 @@ const BookFilters = ({ filters, onFilterChange, onClearFilters, isMobile = false
 
         {/* Price Range Filter */}
         <AccordionItem value="price">
-          <AccordionTrigger className="text-sm font-medium">Price Range (GHS)</AccordionTrigger>
+          <AccordionTrigger className="text-sm font-medium">Price Range (R)</AccordionTrigger>
           <AccordionContent>
             <div className="flex items-center gap-2">
               <Input

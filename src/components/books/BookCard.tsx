@@ -71,11 +71,11 @@ const BookCard = ({ book }: BookCardProps) => {
         <div className="mt-3 flex items-center justify-between">
           <div>
             <span className="text-xl font-bold text-primary">
-              GHS {book.price.toFixed(2)}
+              R {book.price.toFixed(2)}
             </span>
             {book.originalPrice && (
               <span className="ml-2 text-sm text-muted-foreground line-through">
-                GHS {book.originalPrice.toFixed(2)}
+                R {book.originalPrice.toFixed(2)}
               </span>
             )}
           </div>

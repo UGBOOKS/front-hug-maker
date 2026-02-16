@@ -143,7 +143,7 @@ const MyListings = () => {
               </div>
               
               <div className="flex items-center justify-between mt-3">
-                <span className="font-bold text-primary">GHS {book.price.toFixed(2)}</span>
+                <span className="font-bold text-primary">R {book.price.toFixed(2)}</span>
                 <span className="text-xs text-muted-foreground">
                   Listed {book.createdAt.toLocaleDateString()}
                 </span>

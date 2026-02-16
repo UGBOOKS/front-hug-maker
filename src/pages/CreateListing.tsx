@@ -343,7 +343,7 @@ const CreateListing = () => {
                     name="price"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Your Price (GHS) *</FormLabel>
+                        <FormLabel>Your Price (R) *</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="0.00" {...field} />
                         </FormControl>
@@ -357,7 +357,7 @@ const CreateListing = () => {
                     name="originalPrice"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Original Price (GHS)</FormLabel>
+                        <FormLabel>Original Price (R)</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="0.00" {...field} />
                         </FormControl>
@@ -390,7 +390,7 @@ const CreateListing = () => {
                     <FormItem>
                       <FormLabel>Your Location *</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Accra, Ghana" {...field} />
+                        <Input placeholder="e.g., Johannesburg, South Africa" {...field} />
                       </FormControl>
                       <FormDescription>
                         This helps buyers know where the book is located

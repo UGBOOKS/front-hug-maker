@@ -12,6 +12,7 @@ import { SlidersHorizontal, BookOpen, TrendingUp } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import BookCard from '@/components/books/BookCard';
 import BookFilters from '@/components/books/BookFilters';
+import SellBuyTextbooks from '@/components/books/SellBuyTextbooks';
 import { mockBooks } from '@/data/mockBooks';
 import { BookFilter, BOOK_CATEGORIES } from '@/types/book';
 
@@ -86,7 +87,7 @@ const Index = () => {
         <div className="container-page py-12 md:py-16">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-4">
-              Discover Your Next Great Read
+              Your trusted marketplace for academic books and materials
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               Buy and sell books with fellow readers. Find textbooks, novels, and rare finds at great prices.
@@ -129,6 +130,14 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Sell / Buy Textbooks */}
+      <SellBuyTextbooks
+        onBuySearch={(query) => {
+          setFilters((prev) => ({ ...prev, search: query }));
+          document.getElementById('books-grid')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
 
       {/* Main Content */}
       <section className="container-page py-8">
@@ -180,7 +189,7 @@ const Index = () => {
 
             {/* Books Grid */}
             {filteredBooks.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div id="books-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredBooks.map((book, index) => (
                   <div
                     key={book.id}
