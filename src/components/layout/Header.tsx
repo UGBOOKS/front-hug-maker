@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation,useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -31,6 +31,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
   
   const unreadMessages = mockConversations.reduce((acc, conv) => acc + conv.unreadCount, 0);
   
@@ -43,6 +44,10 @@ const Header = () => {
     { path: '/messages', label: 'Messages', icon: MessageCircle, badge: unreadMessages },
     { path: '/offers', label: 'Offers', icon: Tag },
   ];
+
+  const handleLogout = () => {
+    navigate("/login");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -132,8 +137,9 @@ const Header = () => {
                     My Info
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive cursor-pointer">
+                <DropdownMenuItem
+                  onClick={handleLogout} 
+                  className="text-destructive cursor-pointer">
                   <LogOut className="mr-2 h-4 w-4" />
                   Log Out
                 </DropdownMenuItem>
@@ -210,7 +216,8 @@ const Header = () => {
                   My Info
                 </Button>
               </Link>
-              <Button variant="ghost" className="w-full justify-start text-destructive">
+              <Button variant="ghost" className="w-full justify-start text-destructive" 
+                onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Log Out
               </Button>
