@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -48,6 +48,8 @@ type CreateListingForm = z.infer<typeof createListingSchema>;
 
 const CreateListing = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const titleFromSearch = searchParams.get('search')?.trim() ?? '';
   const { toast } = useToast();
   const [images, setImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,7 +57,7 @@ const CreateListing = () => {
   const form = useForm<CreateListingForm>({
     resolver: zodResolver(createListingSchema),
     defaultValues: {
-      title: '',
+      title: titleFromSearch,
       author: '',
       category: '',
       condition: '',

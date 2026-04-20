@@ -32,8 +32,9 @@ const SellBuyTextbooks = ({ onSellSearch, onBuySearch }: SellBuyTextbooksProps) 
   };
 
   return (
-    <section className="bg-muted/50">
-      <div className="container-page py-12 md:py-16">
+    <section className="bg-secondary/40">
+      <div className="container-page py-10 md:py-14">
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-md md:p-10">
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-0">
           {/* Sell Textbooks */}
@@ -52,7 +53,7 @@ const SellBuyTextbooks = ({ onSellSearch, onBuySearch }: SellBuyTextbooksProps) 
                 onChange={(e) => setSellQuery(e.target.value)}
                 className="border-primary/30 focus-visible:ring-primary"
               />
-              <Button type="submit" className="w-full uppercase font-semibold bg-primary hover:bg-primary/90">
+              <Button type="submit" className="w-full uppercase font-semibold bg-accent text-accent-foreground hover:bg-accent/90">
                 Find Book to Sell
               </Button>
             </form>
@@ -74,7 +75,7 @@ const SellBuyTextbooks = ({ onSellSearch, onBuySearch }: SellBuyTextbooksProps) 
                 onChange={(e) => setBuyQuery(e.target.value)}
                 className="border-primary/30 focus-visible:ring-primary"
               />
-              <Button type="submit" className="w-full uppercase font-semibold bg-primary hover:bg-primary/90">
+              <Button type="submit" className="w-full uppercase font-semibold bg-accent text-accent-foreground hover:bg-accent/90">
                 Find Book to Buy
               </Button>
             </form>
@@ -84,10 +85,11 @@ const SellBuyTextbooks = ({ onSellSearch, onBuySearch }: SellBuyTextbooksProps) 
         {/* Bottom banner */}
         <Link
           to="/create-listing"
-          className="mt-10 block w-full py-4 bg-primary text-primary-foreground text-center font-semibold uppercase tracking-wide hover:bg-primary/90 transition-colors"
+          className="mt-8 block w-full rounded-lg py-4 bg-primary text-primary-foreground text-center font-semibold uppercase tracking-wide hover:bg-primary/90 transition-colors"
         >
           Sell Your Textbooks in 4 Easy Steps
         </Link>
+        </div>
       </div>
     </section>
   );

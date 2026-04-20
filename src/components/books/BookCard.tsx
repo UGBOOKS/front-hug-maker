@@ -3,14 +3,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Heart, MapPin, MessageCircle } from 'lucide-react';
+import { Heart, MapPin, PlusCircle } from 'lucide-react';
 import { Book, BOOK_CONDITIONS } from '@/types/book';
 
 interface BookCardProps {
   book: Book;
+  mode?: 'buy' | 'sell';
 }
 
-const BookCard = ({ book }: BookCardProps) => {
+const BookCard = ({ book, mode = 'buy' }: BookCardProps) => {
   const conditionInfo = BOOK_CONDITIONS.find(c => c.value === book.condition);
   
   const getConditionColor = (condition: string) => {
@@ -97,12 +98,26 @@ const BookCard = ({ book }: BookCardProps) => {
 
         <div className="mt-3 flex gap-2">
           <Button asChild variant="default" size="sm" className="flex-1">
-            <Link to={`/book/${book.id}`}>
-              View Details
+            <Link
+              to={
+                mode === 'buy'
+                  ? `/book/${book.id}/buy`
+                  : `/create-listing?search=${encodeURIComponent(book.title)}`
+              }
+            >
+              {mode === 'buy' ? 'Buy Book' : 'Sell Similar'}
             </Link>
           </Button>
-          <Button variant="outline" size="sm">
-            <MessageCircle className="h-4 w-4" />
+          <Button asChild variant="outline" size="sm" className="shrink-0 gap-1 px-2 sm:px-3">
+            <Link
+              to={`/create-listing?search=${encodeURIComponent(book.title)}`}
+              className="flex items-center justify-center"
+            >
+              <PlusCircle className="h-4 w-4 shrink-0" />
+              {mode === 'buy' && (
+                <span className="hidden text-xs font-medium sm:inline">Sell book</span>
+              )}
+            </Link>
           </Button>
         </div>
       </CardContent>
