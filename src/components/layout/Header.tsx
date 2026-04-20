@@ -10,92 +10,97 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Search, 
-  BookOpen, 
-  PlusCircle, 
-  MessageCircle, 
-  User, 
-  LogOut, 
-  Menu, 
+import {
+  Search,
+  BookOpen,
+  PlusCircle,
+  ShoppingCart,
+  User,
+  LogOut,
+  Menu,
   X,
-  Tag,
   LayoutDashboard,
   Heart,
-  GraduationCap
 } from 'lucide-react';
-import { mockUser, mockConversations } from '@/data/mockBooks';
+import { mockUser } from '@/data/mockBooks';
+import { useCart } from '@/context/CartContext';
+
+const primaryNav = [
+  { path: '/', label: 'Home' },
+  { path: '/how-it-works', label: 'How it Works' },
+  { path: '/book-condition', label: 'Book Condition' },
+  { path: '/tutors', label: 'Tutors' },
+  { path: '/contact-us', label: 'Contact Us' },
+] as const;
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
-  
-  const unreadMessages = mockConversations.reduce((acc, conv) => acc + conv.unreadCount, 0);
-  
-  const isActive = (path: string) => location.pathname === path;
+  const { itemCount } = useCart();
 
-  const navLinks = [
-    { path: '/', label: 'Browse', icon: BookOpen },
-    { path: '/tutors', label: 'Tutors', icon: GraduationCap },
-    { path: '/create-listing', label: 'Sell', icon: PlusCircle },
-    { path: '/messages', label: 'Messages', icon: MessageCircle, badge: unreadMessages },
-    { path: '/offers', label: 'Offers', icon: Tag },
-  ];
+  const isActive = (path: string) =>
+    path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background shadow-sm">
       <div className="container-page">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+        <div className="flex h-14 md:h-16 items-center justify-between gap-4">
+          <Link to="/" className="flex shrink-0 items-center gap-2">
             <BookOpen className="h-8 w-8 text-primary" />
-            <span className="text-xl font-serif font-bold text-primary hidden sm:inline">
-              UG Books
-            </span>
+            <span className="font-serif text-xl font-bold text-primary">UG Books</span>
           </Link>
 
-          {/* Search - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-md mx-8">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+            {primaryNav.map(({ path, label }) => (
+              <Link key={path} to={path}>
+                <span
+                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                    isActive(path)
+                      ? 'bg-secondary text-primary'
+                      : 'text-muted-foreground hover:bg-secondary/80 hover:text-foreground'
+                  }`}
+                >
+                  {label}
+                </span>
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden md:flex flex-1 max-w-md min-w-0 justify-end xl:justify-center xl:mx-4">
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search books, authors, ISBN..."
+                placeholder="Search by title, author, or ISBN…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-secondary/50"
+                className="h-10 border-border bg-secondary/40 pl-10"
               />
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {navLinks.map(({ path, label, icon: Icon, badge }) => (
-              <Link key={path} to={path}>
-                <Button 
-                  variant={isActive(path) ? 'secondary' : 'ghost'} 
-                  size="sm"
-                  className="relative"
-                >
-                  <Icon className="h-4 w-4 mr-2" />
-                  {label}
-                  {badge && badge > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-                    >
-                      {badge}
-                    </Badge>
-                  )}
-                </Button>
+          <div className="hidden md:flex items-center gap-2">
+            <Button asChild size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <Link to="/create-listing">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Sell
               </Link>
-            ))}
+            </Button>
+            <Button asChild variant="outline" size="sm" className="relative">
+              <Link to="/cart">
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Cart
+                {itemCount > 0 && (
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-accent-foreground">
+                    {itemCount > 99 ? '99+' : itemCount}
+                  </span>
+                )}
+              </Link>
+            </Button>
 
-            {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="ml-2">
+                <Button variant="ghost" size="icon" className="rounded-full">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={mockUser.avatar} alt={mockUser.name} />
                     <AvatarFallback>{mockUser.name.charAt(0)}</AvatarFallback>
@@ -109,109 +114,111 @@ const Header = () => {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/dashboard" className="flex items-center cursor-pointer">
+                  <Link to="/dashboard" className="flex cursor-pointer items-center">
                     <LayoutDashboard className="mr-2 h-4 w-4" />
                     Dashboard
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/my-listings" className="flex items-center cursor-pointer">
+                  <Link to="/my-listings" className="flex cursor-pointer items-center">
                     <BookOpen className="mr-2 h-4 w-4" />
                     My Listings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/wishlist" className="flex items-center cursor-pointer">
+                  <Link to="/wishlist" className="flex cursor-pointer items-center">
                     <Heart className="mr-2 h-4 w-4" />
                     Wishlist
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/my-info" className="flex items-center cursor-pointer">
+                  <Link to="/my-info" className="flex cursor-pointer items-center">
                     <User className="mr-2 h-4 w-4" />
                     My Info
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer text-destructive">
                   <LogOut className="mr-2 h-4 w-4" />
                   Log Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </nav>
+          </div>
 
-          {/* Mobile Menu Button */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
 
-        {/* Mobile Search */}
         <div className="md:hidden pb-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search books..."
+              placeholder="Search books…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-secondary/50"
+              className="h-10 border-border bg-secondary/40 pl-10"
             />
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden pb-4 space-y-2 animate-fade-in">
-            {navLinks.map(({ path, label, icon: Icon, badge }) => (
-              <Link 
-                key={path} 
-                to={path}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Button 
-                  variant={isActive(path) ? 'secondary' : 'ghost'} 
-                  className="w-full justify-start relative"
+          <nav className="border-t border-border pb-4 lg:hidden animate-fade-in">
+            <div className="flex flex-col gap-1 pt-3">
+              {primaryNav.map(({ path, label }) => (
+                <Link key={path} to={path} onClick={() => setIsMenuOpen(false)}>
+                  <span
+                    className={`block rounded-md px-3 py-2.5 text-sm font-medium ${
+                      isActive(path) ? 'bg-secondary text-primary' : 'text-foreground'
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </Link>
+              ))}
+              <div className="my-2 border-t border-border" />
+              <Button asChild className="w-full justify-start bg-accent text-accent-foreground hover:bg-accent/90">
+                <Link to="/create-listing" onClick={() => setIsMenuOpen(false)}>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Sell a book
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full justify-start">
+                <Link
+                  to="/cart"
+                  className="flex w-full items-center"
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  <Icon className="h-4 w-4 mr-2" />
-                  {label}
-                  {badge && badge > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="ml-auto"
-                    >
-                      {badge}
-                    </Badge>
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Cart
+                  {itemCount > 0 && (
+                    <span className="ml-auto rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-accent-foreground">
+                      {itemCount > 99 ? '99+' : itemCount}
+                    </span>
                   )}
-                </Button>
-              </Link>
-            ))}
-            <div className="border-t border-border pt-2 mt-2">
+                </Link>
+              </Button>
               <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start">
-                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
                   Dashboard
                 </Button>
               </Link>
               <Link to="/my-listings" onClick={() => setIsMenuOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start">
-                  <BookOpen className="h-4 w-4 mr-2" />
+                  <BookOpen className="mr-2 h-4 w-4" />
                   My Listings
                 </Button>
               </Link>
-              <Link to="/my-info" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="ghost" className="w-full justify-start">
-                  <User className="h-4 w-4 mr-2" />
-                  My Info
-                </Button>
-              </Link>
               <Button variant="ghost" className="w-full justify-start text-destructive">
-                <LogOut className="h-4 w-4 mr-2" />
+                <LogOut className="mr-2 h-4 w-4" />
                 Log Out
               </Button>
             </div>

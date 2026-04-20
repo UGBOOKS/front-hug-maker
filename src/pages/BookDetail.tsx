@@ -20,6 +20,7 @@ import {
   Heart,
   MapPin,
   MessageCircle,
+  ShoppingCart,
   Share2,
   Calendar,
   BookOpen,
@@ -255,8 +256,15 @@ const BookDetail = () => {
             </Card>
 
             {/* CTA Buttons */}
-            <div className="flex gap-3">
-              <Button className="flex-1" size="lg">
+            <div className="flex flex-col gap-3">
+              <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                <Link to={`/book/${book.id}/buy`}>
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  Buy this book
+                </Link>
+              </Button>
+              <div className="flex gap-3">
+              <Button variant="outline" className="flex-1" size="lg">
                 <MessageCircle className="h-5 w-5 mr-2" />
                 Message Seller
               </Button>
@@ -319,6 +327,7 @@ const BookDetail = () => {
                   </DialogContent>
                 </Dialog>
               )}
+              </div>
             </div>
 
             <p className="text-xs text-center text-muted-foreground">

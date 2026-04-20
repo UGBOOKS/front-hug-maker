@@ -4,20 +4,19 @@ import { Button } from '@/components/ui/button';
 import {
   BookOpen,
   PlusCircle,
-  MessageCircle,
-  Tag,
+  ShoppingCart,
+  Mail,
   TrendingUp,
   DollarSign,
   ShoppingBag,
   Eye,
 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
-import { mockBooks, mockOffers, mockConversations, myListings } from '@/data/mockBooks';
+import { myListings } from '@/data/mockBooks';
 
 const Dashboard = () => {
-  const pendingOffers = mockOffers.filter((o) => o.status === 'pending').length;
-  const unreadMessages = mockConversations.reduce((acc, c) => acc + c.unreadCount, 0);
   const activeListings = myListings.length;
+  const cartItems = 3;
   const totalViews = 156; // Mock data
   const totalSales = 12;
   const totalEarnings = 485.00;
@@ -31,17 +30,17 @@ const Dashboard = () => {
       color: 'text-primary',
     },
     {
-      icon: Tag,
-      label: 'Pending Offers',
-      value: pendingOffers,
-      href: '/offers',
+      icon: ShoppingCart,
+      label: 'Cart Items',
+      value: cartItems,
+      href: '/cart',
       color: 'text-accent',
     },
     {
-      icon: MessageCircle,
-      label: 'Unread Messages',
-      value: unreadMessages,
-      href: '/messages',
+      icon: Mail,
+      label: 'Contact Support',
+      value: '24/7',
+      href: '/contact-us',
       color: 'text-info',
     },
     {
@@ -148,25 +147,15 @@ const Dashboard = () => {
                 </Link>
               </Button>
               <Button asChild variant="outline" className="w-full justify-start">
-                <Link to="/messages">
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  Check Messages
-                  {unreadMessages > 0 && (
-                    <span className="ml-auto bg-destructive text-destructive-foreground text-xs px-2 py-0.5 rounded-full">
-                      {unreadMessages}
-                    </span>
-                  )}
+                <Link to="/cart">
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  View Cart
                 </Link>
               </Button>
               <Button asChild variant="outline" className="w-full justify-start">
-                <Link to="/offers">
-                  <Tag className="h-4 w-4 mr-2" />
-                  Review Offers
-                  {pendingOffers > 0 && (
-                    <span className="ml-auto bg-accent text-accent-foreground text-xs px-2 py-0.5 rounded-full">
-                      {pendingOffers}
-                    </span>
-                  )}
+                <Link to="/contact-us">
+                  <Mail className="h-4 w-4 mr-2" />
+                  Contact Us
                 </Link>
               </Button>
             </CardContent>
