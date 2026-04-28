@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation,useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -25,6 +25,12 @@ import {
 import { mockUser } from '@/data/mockBooks';
 import { useCart } from '@/context/CartContext';
 
+// Mock conversations data - add this or import from a file
+const mockConversations = [
+  { unreadCount: 0 },
+  // Add your actual conversations data here
+];
+
 const primaryNav = [
   { path: '/', label: 'Home' },
   { path: '/how-it-works', label: 'How it Works' },
@@ -42,8 +48,7 @@ const Header = () => {
   
   const unreadMessages = mockConversations.reduce((acc, conv) => acc + conv.unreadCount, 0);
   
-  const isActive = (path: string) => location.pathname === path;
-
+  // Fixed: Only one isActive function
   const isActive = (path: string) =>
     path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
 
@@ -147,10 +152,10 @@ const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer text-destructive">
-                <DropdownMenuItem
+                <DropdownMenuItem 
                   onClick={handleLogout} 
-                  className="text-destructive cursor-pointer">
+                  className="text-destructive cursor-pointer"
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Log Out
                 </DropdownMenuItem>
@@ -182,7 +187,7 @@ const Header = () => {
         </div>
 
         {isMenuOpen && (
-          <nav className="border-t border-border pb-4 lg:hidden animate-fade-in">
+          <div className="border-t border-border pb-4 lg:hidden">
             <div className="flex flex-col gap-1 pt-3">
               {primaryNav.map(({ path, label }) => (
                 <Link key={path} to={path} onClick={() => setIsMenuOpen(false)}>
@@ -229,21 +234,25 @@ const Header = () => {
                   My Listings
                 </Button>
               </Link>
-              <Button variant="ghost" className="w-full justify-start text-destructive">
-                <LogOut className="mr-2 h-4 w-4" />
               <Link to="/my-info" onClick={() => setIsMenuOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start">
-                  <User className="h-4 w-4 mr-2" />
+                  <User className="mr-2 h-4 w-4" />
                   My Info
                 </Button>
               </Link>
-              <Button variant="ghost" className="w-full justify-start text-destructive" 
-                onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start text-destructive"
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
                 Log Out
               </Button>
             </div>
-          </nav>
+          </div>
         )}
       </div>
     </header>
