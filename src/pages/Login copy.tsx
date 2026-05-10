@@ -106,34 +106,14 @@ const Login = () => {
             },
           },
         });
-
+        
         if (error) throw error;
-
-        // ✅ PROFILE CREATION ADDED
-        if (data.user) {
-          await supabase.from('profiles').insert([
-            {
-              id: data.user.id,
-              full_name: name,
-              email: email,
-              phone: null,
-              university: null,
-              campus_location: null,
-              location: null,
-              bio: null,
-              avatar_url: null,
-              rating: 0,
-              total_reviews: 0,
-              created_at: new Date().toISOString(),
-            }
-          ]);
-        }
-
+        
         toast({
           title: 'Account created!',
           description: 'Please check your email to verify your account.',
         });
-
+        
         // Clear form after signup
         setEmail('');
         setPassword('');

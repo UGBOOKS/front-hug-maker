@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,8 +22,14 @@ import {
   LayoutDashboard,
   Heart,
 } from 'lucide-react';
+import { mockUser } from '@/data/mockBooks';
 import { useCart } from '@/context/CartContext';
-import { supabase } from '@/lib/supabase';
+
+// Mock conversations data - add this or import from a file
+const mockConversations = [
+  { unreadCount: 0 },
+  // Add your actual conversations data here
+];
 
 const primaryNav = [
   { path: '/', label: 'Home' },
@@ -36,55 +42,17 @@ const primaryNav = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [user, setUser] = useState<any>(null);
-  const [userProfile, setUserProfile] = useState<any>(null);
   const location = useLocation();
   const { itemCount } = useCart();
   const navigate = useNavigate();
-
-  // Fetch user and profile on mount and listen to auth changes
-  useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-        setUserProfile(profile);
-      }
-    };
-    
-    getUser();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setUser(session?.user || null);
-        if (session?.user) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-          setUserProfile(profile);
-        } else {
-          setUserProfile(null);
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
-
+  
+  const unreadMessages = mockConversations.reduce((acc, conv) => acc + conv.unreadCount, 0);
+  
+  // Fixed: Only one isActive function
   const isActive = (path: string) =>
     path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
     navigate("/login");
   };
 
@@ -144,61 +112,50 @@ const Header = () => {
               </Link>
             </Button>
 
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage 
-                        src={userProfile?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(userProfile?.full_name || user?.email?.charAt(0) || 'U')}&background=random`} 
-                        alt={userProfile?.full_name || user?.email || 'User'} 
-                      />
-                      <AvatarFallback>
-                        {userProfile?.full_name?.charAt(0) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="px-2 py-1.5">
-                    <p className="font-medium">{userProfile?.full_name || user?.email?.split('@')[0] || 'User'}</p>
-                    <p className="text-sm text-muted-foreground">{user?.email}</p>
-                  </div>
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuItem asChild>
-                    <Link to="/my-listings" className="flex cursor-pointer items-center">
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      My Listings
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/wishlist" className="flex cursor-pointer items-center">
-                      <Heart className="mr-2 h-4 w-4" />
-                      Wishlist
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/my-info" className="flex cursor-pointer items-center">
-                      <User className="mr-2 h-4 w-4" />
-                      My Info
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem 
-                    onClick={handleLogout} 
-                    className="text-destructive cursor-pointer"
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button asChild variant="default" size="sm">
-                <Link to="/login">Sign In</Link>
-              </Button>
-            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={mockUser.avatar} alt={mockUser.name} />
+                    <AvatarFallback>{mockUser.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="px-2 py-1.5">
+                  <p className="font-medium">{mockUser.name}</p>
+                  <p className="text-sm text-muted-foreground">{mockUser.email}</p>
+                </div>
+                <DropdownMenuSeparator />
+                
+                <DropdownMenuItem asChild>
+                  <Link to="/my-listings" className="flex cursor-pointer items-center">
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    My Listings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/wishlist" className="flex cursor-pointer items-center">
+                    <Heart className="mr-2 h-4 w-4" />
+                    Wishlist
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/my-info" className="flex cursor-pointer items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    My Info
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={handleLogout} 
+                  className="text-destructive cursor-pointer"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           <Button
@@ -260,40 +217,35 @@ const Header = () => {
                   )}
                 </Link>
               </Button>
-              
-              {user ? (
-                <>
-                  <Link to="/my-listings" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start">
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      My Listings
-                    </Button>
-                  </Link>
-                  <Link to="/my-info" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start">
-                      <User className="mr-2 h-4 w-4" />
-                      My Info
-                    </Button>
-                  </Link>
-                  <Button 
-                    variant="ghost" 
-                    className="w-full justify-start text-destructive"
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log Out
-                  </Button>
-                </>
-              ) : (
-                <Button asChild variant="default" className="w-full">
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                    Sign In
-                  </Link>
+              <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="ghost" className="w-full justify-start">
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  Dashboard
                 </Button>
-              )}
+              </Link>
+              <Link to="/my-listings" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="ghost" className="w-full justify-start">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  My Listings
+                </Button>
+              </Link>
+              <Link to="/my-info" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="ghost" className="w-full justify-start">
+                  <User className="mr-2 h-4 w-4" />
+                  My Info
+                </Button>
+              </Link>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start text-destructive"
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Log Out
+              </Button>
             </div>
           </div>
         )}
